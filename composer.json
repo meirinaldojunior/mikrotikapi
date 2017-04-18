@@ -1,0 +1,25 @@
+{
+  "name": "jjsquady/mikrotikapi",
+  "description": "An Mikrotik Api Wrapper",
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jorge 'jjsquady' Junior",
+      "email": "jjsquady@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "jjsquady\\MikrotikApi\\": "src/"
+    }
+  },
+  "require-dev": {
+    "laravel/framework": "5.4.*",
+    "phpunit/phpunit": "^6.1@dev",
+    "orchestra/testbench": "~3.0"
+  },
+  "require": {
+    "krok/routeros-api": "^1.6"
+  }
+}
