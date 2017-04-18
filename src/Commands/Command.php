@@ -60,36 +60,6 @@ abstract class Command implements CommandInterface
     }
 
     /**
-     * @param $response
-     * @return mixed
-     * @throws InvalidCommandException
-     */
-    private function parseResponse($response)
-    {
-        if (array_key_exists('!trap', $response)){
-            throw new InvalidCommandException($this->getCurrentCommand());
-        }
-
-        return $response;
-    }
-
-    /**
-     * @return string
-     */
-    private function getCurrentCommand()
-    {
-        return $this->command;
-    }
-
-    /**
-     * @param $command
-     */
-    protected function append($command)
-    {
-        $this->command .= $command;
-    }
-
-    /**
      * @param bool $pretty
      * @return array
      */
@@ -140,5 +110,35 @@ abstract class Command implements CommandInterface
     protected function getLastCommand()
     {
         return ucfirst(array_last(explode('/', $this->command)));
+    }
+
+    /**
+     * @param $command
+     */
+    protected function append($command)
+    {
+        $this->command .= $command;
+    }
+
+    /**
+     * @param $response
+     * @return mixed
+     * @throws InvalidCommandException
+     */
+    private function parseResponse($response)
+    {
+        if (array_key_exists('!trap', $response)){
+            throw new InvalidCommandException($this->getCurrentCommand());
+        }
+
+        return $response;
+    }
+
+    /**
+     * @return string
+     */
+    private function getCurrentCommand()
+    {
+        return $this->command;
     }
 }

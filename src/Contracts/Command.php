@@ -12,4 +12,6 @@ namespace jjsquady\MikrotikApi\Contracts;
 interface Command
 {
     function send($pretty = true);
+    function all($pretty = true);
+    function get();
 }
