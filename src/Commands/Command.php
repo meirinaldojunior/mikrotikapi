@@ -8,20 +8,22 @@
 
 namespace jjsquady\MikrotikApi\Commands;
 
-use jjsquady\MikrotikApi\Core\Connector;
-use jjsquady\MikrotikApi\Contracts\Command as CommandInterface;
+use jjsquady\MikrotikApi\Contracts\CommandContract as CommandInterface;
+use jjsquady\MikrotikApi\Core\Client;
+use jjsquady\MikrotikApi\Core\QueryBuilder;
+use jjsquady\MikrotikApi\Core\Request;
 use jjsquady\MikrotikApi\Exceptions\InvalidCommandException;
 
 /**
  * Class Command
  * @package MiKontrol\Http\MikrotikApi\Commands
  */
-abstract class Command implements CommandInterface
+abstract class Command extends Request implements CommandInterface
 {
     /**
-     * @var Connector
+     * @var Client
      */
-    protected $connector;
+    protected $client;
 
     /**
      * @var
@@ -34,111 +36,91 @@ abstract class Command implements CommandInterface
     protected $base_command;
 
     /**
+     * @var \PEAR2\Net\RouterOS\Request
+     */
+    protected $request;
+
+    /**
+     * @var array
+     */
+    protected $commands = [];
+
+    /**
+     * @var array
+     */
+    protected $commandsAlias = [];
+
+    /**
      * @var
      */
-    protected $command;
+    protected $query;
 
     /**
      * Command constructor.
-     * @param Connector $connector
+     * @param Client $client
      */
-    public function __construct(Connector $connector)
+    public function __construct(Client $client)
     {
-        $this->connector = $connector;
-        $this->command = $this->base_command;
-    }
-
-    /**
-     * @param bool $pretty
-     * @return mixed
-     */
-    function send($pretty = true)
-    {
-        $this->connector->write($this->command);
-        $this->command = $this->base_command;
-        return $this->parseResponse($this->connector->read($pretty));
-    }
-
-    /**
-     * @param bool $pretty
-     * @return array
-     */
-    public function all($pretty = true)
-    {
-        $this->append('/print');
-        return $this->send($pretty);
+        $this->client  = $client;
+        $this->request = parent::__construct($this->base_command);
     }
 
     /**
      * @return mixed
      */
-    public function get()
+    public function getBaseCommand()
     {
-        $collection = [];
-        $entityClass = $this->getEntityClassName();
-        foreach ($this->all() as $entity) {
-            $collection[] = new $entityClass($entity);
-        }
-        return $collection;
+        return $this->base_command;
     }
 
-    //    public function __set($property, $value)
-//    {
-//        if (property_exists($this, $property)){
-//            $this->{$property} = $value;
-//            return;
-//        }
-//
-//        throwException(new \Exception("Property {$property} does not exists in this Class."));
-//    }
-
     /**
+     * @param array $args
      * @return string
      */
-    protected function getEntityClassName()
+    protected function buildCommandPath(array $args)
     {
-        $classNameByCommand = __NAMESPACE__. '\\Entity\\' . $this->getLastCommand();
-        $className = class_exists($classNameByCommand) ?
-            $classNameByCommand :
-            $this->entityClass;
-        return $className;
+        if (!is_array($args)) {
+            //TODO: throw exception
+        }
+
+        if (empty(array_last($args))) {
+
+            return implode('', $args);
+
+        }
+
+        return implode("/", $args);
     }
 
     /**
-     * @return mixed
-     */
-    protected function getLastCommand()
-    {
-        return ucfirst(array_last(explode('/', $this->command)));
-    }
-
-    /**
-     * @param $command
-     */
-    protected function append($command)
-    {
-        $this->command .= $command;
-    }
-
-    /**
-     * @param $response
-     * @return mixed
+     * @param $name
+     * @param $arguments
+     * @return QueryBuilder
      * @throws InvalidCommandException
      */
-    private function parseResponse($response)
+    public function __call($name, $arguments)
     {
-        if (array_key_exists('!trap', $response)){
-            throw new InvalidCommandException($this->getCurrentCommand());
+        if (array_key_exists($name, $this->commands)) {
+
+            $command = array_key_exists($name, $this->commandsAlias) ? $this->commandsAlias[$name] : $name;
+
+            $fullCommand = $this->buildCommandPath([$this->base_command, $command]);
+
+            return $this->buildNewQuery($this->commands[$name], $fullCommand);
         }
 
-        return $response;
+        throw new InvalidCommandException($name);
     }
 
     /**
-     * @return string
+     * @param $entityClass
+     * @param $command
+     * @return QueryBuilder
      */
-    private function getCurrentCommand()
+    protected function buildNewQuery($entityClass, $command)
     {
-        return $this->command;
+        $this->query = new QueryBuilder($entityClass, $command, $this->client);
+        return $this->query;
     }
+
 }

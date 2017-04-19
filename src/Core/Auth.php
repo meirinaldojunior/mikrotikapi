@@ -9,7 +9,9 @@
 namespace jjsquady\MikrotikApi\Core;
 
 
-class Auth
+use jjsquady\MikrotikApi\Contracts\AuthContract;
+
+class Auth implements AuthContract
 {
     protected $host;
     protected $username;

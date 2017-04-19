@@ -6,7 +6,7 @@
  * Time: 01:18
  */
 
-namespace jjsquady\MikrotikApi\Commands\Entity;
+namespace jjsquady\MikrotikApi\Entity;
 
 
 /**

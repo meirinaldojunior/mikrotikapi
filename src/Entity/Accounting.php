@@ -2,11 +2,11 @@
 /**
  * Created by PhpStorm.
  * User: Jorge
- * Date: 17/04/2017
- * Time: 23:29
+ * Date: 19/04/2017
+ * Time: 04:59
  */
 
-namespace jjsquady\MikrotikApi\Commands\Entity;
+namespace jjsquady\MikrotikApi\Entity;
 
 
 class Accounting extends Entity

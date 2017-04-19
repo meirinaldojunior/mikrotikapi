@@ -2,17 +2,13 @@
 /**
  * Created by PhpStorm.
  * User: Jorge
- * Date: 18/04/2017
- * Time: 01:57
+ * Date: 19/04/2017
+ * Time: 05:03
  */
 
-namespace jjsquady\MikrotikApi\Commands\Entity;
+namespace jjsquady\MikrotikApi\Entity;
 
 
-/**
- * Class Bridge
- * @package MiKontrol\Http\MikrotikApi\Commands\Entity
- */
 class Bridge extends Entity
 {
     /**

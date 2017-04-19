@@ -9,7 +9,7 @@
 namespace jjsquady\MikrotikApi\Contracts;
 
 
-interface Connector
+interface ClientContract
 {
     function connect();
     function isConnected();

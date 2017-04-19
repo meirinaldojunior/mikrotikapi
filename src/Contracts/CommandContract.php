@@ -9,9 +9,7 @@
 namespace jjsquady\MikrotikApi\Contracts;
 
 
-interface Command
+interface CommandContract
 {
-    function send($pretty = true);
-    function all($pretty = true);
-    function get();
+
 }

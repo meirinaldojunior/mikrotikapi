@@ -6,7 +6,10 @@
  * Time: 22:54
  */
 
-namespace jjsquady\MikrotikApi\Commands\Entity;
+namespace jjsquady\MikrotikApi\Entity;
+
+use jjsquady\MikrotikApi\Core\QueryBuilder;
+use ReflectionClass;
 
 /**
  * Class Entity
@@ -14,26 +17,45 @@ namespace jjsquady\MikrotikApi\Commands\Entity;
  */
 abstract class Entity
 {
+
+    protected $query;
+
+    protected $directory;
+
     /**
      * @var
      */
     protected $fillable;
 
-    /**
-     * Entity constructor.
-     * @param array $params
-     */
-    public function __construct(array $params)
+    public function __construct(array $params, $query = null)
     {
+        if ($query instanceof QueryBuilder) {
+            $this->_query = $query;
+        }
+
+        if (is_null($this->directory)) {
+            $this->directory = (new ReflectionClass($this))->getShortName();
+        }
+
         $check = isset($this->fillable);
 
-        foreach ($params as $param => $value){
-            if($check){
+        foreach ($params as $param => $value) {
+            if ($check) {
                 in_array($param, $this->fillable) ? $this->{$param} = $value : null;
-            }else{
+            } else {
                 $this->{$param} = $value;
             }
         }
+    }
+
+    public function toArray()
+    {
+        return get_object_vars($this);
+    }
+
+    public function getDirectory()
+    {
+        return $this->directory;
     }
 
     /**
@@ -52,7 +74,7 @@ abstract class Entity
     {
         $propertyClean = $this->convertToDashes($property);
 
-        if (isset($this->fillable)){
+        if (isset($this->fillable)) {
             return $this->getFillableProperty($propertyClean);
         }
 
@@ -68,8 +90,8 @@ abstract class Entity
     {
         return in_array($property, $this->fillable) ?
             property_exists($this, $property) ?
-            $this->{$property} :
-            null :
+                $this->{$property} :
+                null :
             null;
     }
 

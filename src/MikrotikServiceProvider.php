@@ -3,7 +3,6 @@
 namespace jjsquady\MikrotikApi;
 
 use Illuminate\Support\ServiceProvider;
-use RouterosAPI;
 
 class MikrotikServiceProvider extends ServiceProvider
 {
@@ -25,7 +24,7 @@ class MikrotikServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('mikontrollib', function($app) {
-            return new Mikrotik(new RouterosAPI());
+            return new Mikrotik();
         });
     }
 

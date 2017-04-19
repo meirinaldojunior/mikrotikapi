@@ -8,11 +8,11 @@
 
 namespace jjsquady\MikrotikApi;
 
+use Exception;
 use jjsquady\MikrotikApi\Core\Auth;
-use jjsquady\MikrotikApi\Core\Connector;
+use jjsquady\MikrotikApi\Core\Client;
+use jjsquady\MikrotikApi\Exceptions\ConnectionException;
 use jjsquady\MikrotikApi\Exceptions\WrongArgumentTypeException;
-use jjsquady\MikrotikApi\Contracts\Connector as ConnectorInterface;
-use RouterosAPI;
 
 /**
  * Class Mikrotik
@@ -20,98 +20,77 @@ use RouterosAPI;
  */
 class Mikrotik
 {
-    /**
-     * @var RouterosAPI
-     */
-    protected $api;
 
-    /**
-     * @var Auth
-     */
     protected $auth;
 
-    /**
-     * @var ConnectorInterface
-     */
-    protected $connector;
+    protected $client;
 
+    protected $connected;
 
-    /**
-     * Mikrotik constructor.
-     * @param RouterosAPI $api
-     * @param ConnectorInterface $connector
-     */
-    public function __construct(RouterosAPI $api, ConnectorInterface $connector = null)
+    public function __construct()
     {
-        $this->api       = $api;
-        $this->connector = $connector;
+        //TODO: some...
     }
 
-
-    /**
-     * @param $auth
-     * @return mixed
-     */
     public function connect($auth)
     {
-        $this->auth = $this->getAuth($auth);
-        return $this->getConnection();
-    }
-
-    /**
-     *
-     */
-    private function getConnection()
-    {
-        if (is_null($this->connector)) {
-            $this->connector = new Connector($this->auth, $this->api);
+        if (! $auth instanceof Auth) {
+            $this->auth = $this->getAuth($auth);
+        } else {
+            $this->auth = $auth;
         }
 
-        $this->connector->connect();
-        return $this->connector;
-    }
+        try {
 
-    /**
-     * @param $auth
-     * @return Auth
-     * @throws WrongArgumentTypeException
-     */
-    private function getAuth($auth)
-    {
-        if ($auth instanceof Auth) {
-            return $auth;
+            return $this->getClient($this->auth);
+
+        } catch (ConnectionException $e) {
+
+            echo $e->getMessage();
+
         }
 
-        if (is_array($auth)) {
-            $auth = new Auth(...$auth);
-            return $auth;
-        }
-
-        throw new WrongArgumentTypeException('Array or Auth::class', gettype($auth));
     }
 
-    /**
-     * @return mixed
-     */
-    public function connector()
+    public function isConnected()
     {
-        return $this->connector;
+        return $this->connected;
     }
 
-    /**
-     * @return mixed
-     */
-    public function credentials()
+    public function client()
+    {
+        return $this->client;
+    }
+
+    public function auth()
     {
         return $this->auth;
     }
 
-    /**
-     * @return mixed
-     */
-    public function host()
+    private function getAuth($auth)
     {
-        return $this->auth->getHost();
+        if (! is_array($auth)) {
+            throw new WrongArgumentTypeException("Array or Auth::class", gettype($auth));
+        }
+
+        $auth = new Auth(...$auth);
+        return $auth;
+    }
+
+    private function getClient(Auth $auth)
+    {
+        try {
+            $this->client = new Client(...[$this->auth->getHost(), $this->auth->getUsername(), $this->auth->getPassword(true)]);
+
+            $this->connected = true;
+
+            return $this->client;
+
+        } catch (Exception $e) {
+
+            throw new ConnectionException($auth->getHost());
+
+        }
     }
 
 }

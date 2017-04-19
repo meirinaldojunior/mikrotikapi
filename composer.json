@@ -20,6 +20,7 @@
     "orchestra/testbench": "~3.0"
   },
   "require": {
-    "krok/routeros-api": "^1.6"
+    "krok/routeros-api": "^1.6",
+    "pear2/net_routeros": "*@alpha"
   }
 }

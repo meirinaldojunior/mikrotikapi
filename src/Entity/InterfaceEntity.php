@@ -6,11 +6,13 @@
  * Time: 00:19
  */
 
-namespace jjsquady\MikrotikApi\Commands\Entity;
+namespace jjsquady\MikrotikApi\Entity;
 
 
 class InterfaceEntity extends Entity
 {
+    protected $directory = '';
+
     protected $fillable = [
         '.id',
         'name',
