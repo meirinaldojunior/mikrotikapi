@@ -4,57 +4,132 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e992557b04f21244308436f033647bc",
+    "content-hash": "d370c36754f3ebbe0724d14ab1c99d8e",
     "packages": [
         {
-            "name": "krok/routeros-api",
-            "version": "1.6.1",
+            "name": "pear2/net_routeros",
+            "version": "1.0.0b5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/yii2-developer/routeros-api.git",
-                "reference": "057f81454cdce4f7426aba67c32738c52d7ed660"
+                "url": "https://github.com/pear2/Net_RouterOS.git",
+                "reference": "db24b8c4cd63d593dc8387987a954926d96cafb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yii2-developer/routeros-api/zipball/057f81454cdce4f7426aba67c32738c52d7ed660",
-                "reference": "057f81454cdce4f7426aba67c32738c52d7ed660",
+                "url": "https://api.github.com/repos/pear2/Net_RouterOS/zipball/db24b8c4cd63d593dc8387987a954926d96cafb8",
+                "reference": "db24b8c4cd63d593dc8387987a954926d96cafb8",
                 "shasum": ""
+            },
+            "require": {
+                "pear2/net_transmitter": ">=1.0.0a5",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "pear2/cache_shm": "dev-develop",
+                "pear2/console_color": "dev-develop",
+                "pear2/console_commandline": "dev-master",
+                "phpunit/phpunit": "@stable",
+                "squizlabs/php_codesniffer": "@stable"
+            },
+            "suggest": {
+                "ext-apc": "This or Wincache is required for persistent connections.",
+                "ext-openssl": "Enables encrypted connections.",
+                "ext-wincache": "This or APC is required for persistent connections. Reccomended instead of APC on Windows.",
+                "pear2/cache_shm": "Enables persistent connections.",
+                "pear2/console_color": "Enables colors in the console",
+                "pear2/console_commandline": "Enables the console"
+            },
+            "bin": [
+                "scripts/roscon.php"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PEAR2\\Net\\RouterOS\\": "src/",
+                    "PEAR2\\Net\\Transmitter\\": "vendor/pear2/net_transmitter/src/",
+                    "PEAR2\\Cache\\SHM": "vendor/pear2/cache_shm/src/",
+                    "PEAR2\\Console\\Color": "vendor/pear2/console_color/src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Vasil Rangelov",
+                    "email": "boen.robot@gmail.com",
+                    "role": "lead"
+                }
+            ],
+            "description": "This package allows you to read and write information from a RouterOS host using MikroTik's RouterOS API.",
+            "homepage": "http://pear2.github.com/Net_RouterOS/",
+            "keywords": [
+                "api",
+                "mikrotik",
+                "package",
+                "pear2",
+                "router",
+                "routeros"
+            ],
+            "time": "2014-11-04T12:52:46+00:00"
+        },
+        {
+            "name": "pear2/net_transmitter",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pear2/Net_Transmitter.git",
+                "reference": "461564b18b7245f05dea80d943d2b87eb6a5de5e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pear2/Net_Transmitter/zipball/461564b18b7245f05dea80d943d2b87eb6a5de5e",
+                "reference": "461564b18b7245f05dea80d943d2b87eb6a5de5e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "@stable"
+            },
+            "suggest": {
+                "ext-apc": "This, APCu or Wincache is required for persistent connections.",
+                "ext-apcu": "This, APC or Wincache is required for persistent connections.",
+                "ext-openssl": "Enables encrypted connections.",
+                "ext-wincache": "This, APC or APCu is required for persistent connections. Reccomended for Windows.",
+                "pear2/cache_shm": "Enables persistent connections"
             },
             "type": "library",
             "autoload": {
-                "classmap": [
-                    "routeros_api.class.php"
-                ]
+                "psr-0": {
+                    "PEAR2\\Net\\Transmitter\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
             "authors": [
                 {
-                    "name": "Denis Basta",
-                    "email": "Denis.Basta@gmail.com"
-                },
-                {
-                    "name": "Nick Barnes"
-                },
-                {
-                    "name": "Ben Menking",
-                    "email": "ben@infotechsc.com"
-                },
-                {
-                    "name": "Jeremy Jefferson"
-                },
-                {
-                    "name": "Cristian Deluxe"
-                },
-                {
-                    "name": "Mikhail Moskalev"
+                    "name": "Vasil Rangelov",
+                    "email": "boen.robot@gmail.com",
+                    "role": "lead"
                 }
             ],
-            "description": "Client API for RouterOS/Mikrotik",
+            "description": "A stream wrapper that ensures data integrity. Particularly useful for sockets.",
+            "homepage": "http://pear2.github.com/Net_Transmitter/",
             "keywords": [
-                "mikrotik",
-                "routeros"
+                "Socket",
+                "integrity",
+                "network",
+                "networking",
+                "package",
+                "pear2",
+                "sockets"
             ],
-            "time": "2016-05-24T17:11:14+00:00"
+            "time": "2016-11-07 02:15:19"
         }
     ],
     "packages-dev": [
@@ -269,7 +344,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2017-04-07T07:05:49+00:00"
+            "time": "2017-04-07 07:05:49"
         },
         {
             "name": "laravel/framework",
@@ -277,12 +352,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "110e8d7e6cd0d13a38cb400aaca5040025a2c2ff"
+                "reference": "51cad04a923bf22c9ae96d77e4cb07767d634c17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/110e8d7e6cd0d13a38cb400aaca5040025a2c2ff",
-                "reference": "110e8d7e6cd0d13a38cb400aaca5040025a2c2ff",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/51cad04a923bf22c9ae96d77e4cb07767d634c17",
+                "reference": "51cad04a923bf22c9ae96d77e4cb07767d634c17",
                 "shasum": ""
             },
             "require": {
@@ -398,7 +473,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-04-17 21:00:43"
+            "time": "2017-04-18T15:36:20+00:00"
         },
         {
             "name": "league/flysystem",
@@ -764,7 +839,7 @@
                 "orchestral",
                 "testing"
             ],
-            "time": "2017-04-06T02:00:26+00:00"
+            "time": "2017-04-06 02:00:26"
         },
         {
             "name": "paragonie/random_compat",
@@ -1131,12 +1206,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "71010bed82f61c780d3471a919a34265155b24e1"
+                "reference": "1afe83220e40438c219b81a93c4c44cd8a1c63c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/71010bed82f61c780d3471a919a34265155b24e1",
-                "reference": "71010bed82f61c780d3471a919a34265155b24e1",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/1afe83220e40438c219b81a93c4c44cd8a1c63c9",
+                "reference": "1afe83220e40438c219b81a93c4c44cd8a1c63c9",
                 "shasum": ""
             },
             "require": {
@@ -1155,7 +1230,7 @@
                 "phpunit/phpunit": "^6.0"
             },
             "suggest": {
-                "ext-xdebug": "^2.5.2"
+                "ext-xdebug": "^2.5.3"
             },
             "type": "library",
             "extra": {
@@ -1186,7 +1261,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-04-18 05:35:43"
+            "time": "2017-04-18T12:28:35+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -2378,7 +2453,7 @@
             ],
             "description": "Symfony CssSelector Component",
             "homepage": "https://symfony.com",
-            "time": "2017-04-12T14:13:17+00:00"
+            "time": "2017-04-12 14:13:17"
         },
         {
             "name": "symfony/debug",
@@ -2490,7 +2565,7 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "https://symfony.com",
-            "time": "2017-04-12T14:13:17+00:00"
+            "time": "2017-04-12 14:13:17"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -3210,6 +3285,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "pear2/net_routeros": 15,
         "phpunit/phpunit": 20
     },
     "prefer-stable": false,
