@@ -1,7 +1,7 @@
 {
   "name": "jjsquady/mikrotikapi",
   "description": "An Mikrotik Api Wrapper",
-  "minimum-stability": "stable",
+  "minimum-stability": "dev",
   "license": "MIT",
   "authors": [
     {
