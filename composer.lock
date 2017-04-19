@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "91885a07d166b1bee046830cd5c3fe27",
+    "content-hash": "d370c36754f3ebbe0724d14ab1c99d8e",
     "packages": [
         {
             "name": "pear2/net_routeros",
@@ -3285,6 +3285,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "pear2/net_routeros": 15,
         "phpunit/phpunit": 20
     },
     "prefer-stable": false,
