@@ -4,11 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d370c36754f3ebbe0724d14ab1c99d8e",
+    "content-hash": "1e83adb76beab44d28f3a93e3b645a1b",
     "packages": [
         {
             "name": "pear2/net_routeros",
-            "version": "1.0.0b5",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear2/Net_RouterOS.git",
@@ -72,7 +72,7 @@
                 "router",
                 "routeros"
             ],
-            "time": "2014-11-04T12:52:46+00:00"
+            "time": "2014-11-04 12:52:46"
         },
         {
             "name": "pear2/net_transmitter",
@@ -473,7 +473,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-04-18T15:36:20+00:00"
+            "time": "2017-04-18 15:36:20"
         },
         {
             "name": "league/flysystem",
@@ -1261,7 +1261,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-04-18T12:28:35+00:00"
+            "time": "2017-04-18 12:28:35"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -3285,7 +3285,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "pear2/net_routeros": 15,
+        "pear2/net_routeros": 20,
         "phpunit/phpunit": 20
     },
     "prefer-stable": false,
