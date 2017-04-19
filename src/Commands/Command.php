@@ -12,26 +12,43 @@ use jjsquady\MikrotikApi\Contracts\CommandContract as CommandInterface;
 use jjsquady\MikrotikApi\Core\Client;
 use jjsquady\MikrotikApi\Core\QueryBuilder;
 use jjsquady\MikrotikApi\Core\Request;
+use jjsquady\MikrotikApi\Entity\Entity;
+use jjsquady\MikrotikApi\Entity\GeneticEntity;
 use jjsquady\MikrotikApi\Exceptions\InvalidCommandException;
+use jjsquady\MikrotikApi\Support\EntityUtils;
+use Exception;
 
 /**
  * Class Command
  * @package MiKontrol\Http\MikrotikApi\Commands
  */
-abstract class Command extends Request implements CommandInterface
+abstract class Command implements CommandInterface
 {
+    use EntityUtils;
+
+    /**
+     * @var mixed
+     */
+    private $_response;
+
+
+    /**
+     * @var boolean
+     */
+    private $_async;
+
     /**
      * @var Client
      */
     protected $client;
 
     /**
-     * @var
+     * @var Entity
      */
     protected $entityClass;
 
     /**
-     * @var
+     * @var string
      */
     protected $base_command;
 
@@ -51,7 +68,7 @@ abstract class Command extends Request implements CommandInterface
     protected $commandsAlias = [];
 
     /**
-     * @var
+     * @var QueryBuilder
      */
     protected $query;
 
@@ -62,7 +79,56 @@ abstract class Command extends Request implements CommandInterface
     public function __construct(Client $client)
     {
         $this->client  = $client;
-        $this->request = parent::__construct($this->base_command);
+        $this->request = new Request($this->base_command);
+    }
+
+
+    /**
+     * @param Client $client
+     * @return static
+     */
+    public static function bind(Client $client)
+    {
+        $instance          = new static($client);
+        $instance->client  = $client;
+        $instance->request = new Request($instance->base_command);
+        return $instance;
+    }
+
+
+    /**
+     * @param $command
+     * @param bool $async
+     * @param null $args array
+     * @param null $callback Closure
+     * @return $this
+     * @throws Exception
+     */
+    public function executeCommand($command, $args = null)
+    {
+
+        $this->request->setCommand($command);
+
+        $this->processCommandArgs($args);
+
+        $this->_response = $this->processCommand();
+
+        return $this;
+
+    }
+
+    /**
+     * @param null $entityClass
+     * @return \jjsquady\MikrotikApi\Core\Collection
+     */
+    public function get($entityClass = null)
+    {
+
+        $this->entityClass = (is_null($entityClass)) ?
+            GeneticEntity::class :
+            $entityClass;
+
+        return $this->convertArrayToEntities($this->_response, $this->entityClass);
     }
 
     /**
@@ -84,9 +150,7 @@ abstract class Command extends Request implements CommandInterface
         }
 
         if (empty(array_last($args))) {
-
             return implode('', $args);
-
         }
 
         return implode("/", $args);
@@ -101,11 +165,8 @@ abstract class Command extends Request implements CommandInterface
     public function __call($name, $arguments)
     {
         if (array_key_exists($name, $this->commands)) {
-
             $command = array_key_exists($name, $this->commandsAlias) ? $this->commandsAlias[$name] : $name;
-
             $fullCommand = $this->buildCommandPath([$this->base_command, $command]);
-
             return $this->buildNewQuery($this->commands[$name], $fullCommand);
         }
 
@@ -121,6 +182,28 @@ abstract class Command extends Request implements CommandInterface
     {
         $this->query = new QueryBuilder($entityClass, $command, $this->client);
         return $this->query;
+    }
+
+    /**
+     * @return \PEAR2\Net\RouterOS\ResponseCollection
+     */
+    private function processCommand()
+    {
+        return $this->client->sendSync($this->request);
+    }
+
+    /**
+     * @param $args
+     */
+    private function processCommandArgs($args)
+    {
+        if (!is_array($args)) {
+            return;
+        }
+
+        array_map(function ($arg) {
+            $this->request->setArgument($arg);
+        }, $args);
     }
 
 }

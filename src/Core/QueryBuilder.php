@@ -62,7 +62,7 @@ class QueryBuilder extends RouterQuery
 
         $items = $util->getAll($args, $query);
 
-        return $this->convertArrayToEntities($items);
+        return $this->convertArrayToEntities($items, $this->entityClass);
     }
 
 

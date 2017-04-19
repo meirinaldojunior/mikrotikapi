@@ -21,20 +21,36 @@ use jjsquady\MikrotikApi\Exceptions\WrongArgumentTypeException;
 class Mikrotik
 {
 
+    /**
+     * @var Auth
+     */
     protected $auth;
 
+    /**
+     * @var Client
+     */
     protected $client;
 
+    /**
+     * @var
+     */
     protected $connected;
 
+    /**
+     * Mikrotik constructor.
+     */
     public function __construct()
     {
         //TODO: some...
     }
 
+    /**
+     * @param $auth
+     * @return Client
+     */
     public function connect($auth)
     {
-        if (! $auth instanceof Auth) {
+        if (!$auth instanceof Auth) {
             $this->auth = $this->getAuth($auth);
         } else {
             $this->auth = $auth;
@@ -52,24 +68,46 @@ class Mikrotik
 
     }
 
+    /**
+     *
+     */
+    public function close()
+    {
+        $this->client->close();
+    }
+
+    /**
+     * @return mixed
+     */
     public function isConnected()
     {
         return $this->connected;
     }
 
+    /**
+     * @return Client
+     */
     public function client()
     {
         return $this->client;
     }
 
+    /**
+     * @return Auth
+     */
     public function auth()
     {
         return $this->auth;
     }
 
+    /**
+     * @param $auth Auth
+     * @return Auth
+     * @throws WrongArgumentTypeException
+     */
     private function getAuth($auth)
     {
-        if (! is_array($auth)) {
+        if (!is_array($auth)) {
             throw new WrongArgumentTypeException("Array or Auth::class", gettype($auth));
         }
 
@@ -77,10 +115,16 @@ class Mikrotik
         return $auth;
     }
 
+    /**
+     * @param Auth $auth
+     * @return Client
+     * @throws ConnectionException
+     */
     private function getClient(Auth $auth)
     {
         try {
-            $this->client = new Client(...[$this->auth->getHost(), $this->auth->getUsername(), $this->auth->getPassword(true)]);
+            $this->client = new Client(...
+                [$this->auth->getHost(), $this->auth->getUsername(), $this->auth->getPassword(true)]);
 
             $this->connected = true;
 

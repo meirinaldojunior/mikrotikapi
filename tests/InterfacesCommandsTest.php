@@ -38,10 +38,20 @@ class InterfacesCommandsTest extends TestCase
         $this->assertInstanceOf(Interfaces::class, new Interfaces($this->getConn()));
     }
 
+    public function test_binds_client_statically()
+    {
+        $this->assertInstanceOf(Interfaces::class, Interfaces::bind($this->getConn()));
+    }
+
+    public function test_get_collection_thought_bind()
+    {
+        $this->assertInstanceOf(Collection::class, Interfaces::bind($this->getConn())->ethernet()->all());
+    }
+
     public function test_if_base_command_was_set()
     {
         $icomm = new Interfaces($this->getConn());
-        $this->assertEquals('/interface', $icomm->getCommand());
+        $this->assertEquals('/interface', $icomm->getBaseCommand());
     }
 
     public function test_if_a_command_returns_a_querybuilder()

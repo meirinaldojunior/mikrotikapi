@@ -54,7 +54,5 @@ class IpCommandsTest extends TestCase
     {
         $ipcomm = new Ip($this->getConn());
         $this->assertInstanceOf(Collection::class, $ipcomm->accounting()->all());
-
-        var_dump($ipcomm->accounting()->first());
     }
 }

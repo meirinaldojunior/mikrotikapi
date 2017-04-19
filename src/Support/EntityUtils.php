@@ -12,9 +12,7 @@ use jjsquady\MikrotikApi\Core\Collection;
 
 trait EntityUtils
 {
-    protected $entityClass;
-
-    private function convertArrayToEntities($items)
+    private function convertArrayToEntities($items, $entityClass)
     {
         if (!is_array($items)) {
             // TODO: throw exception
@@ -23,7 +21,7 @@ trait EntityUtils
         $collection = new Collection();
 
         foreach ($items as $item) {
-            $collection->push(new $this->entityClass($this->getEntityProperties($item)));
+            $collection->push(new $entityClass($this->getEntityProperties($item)));
         }
 
         return $collection;
