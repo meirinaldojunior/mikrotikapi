@@ -4,11 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1e83adb76beab44d28f3a93e3b645a1b",
+    "content-hash": "4d924f799d5a5a78928927b7c22f0292",
     "packages": [
         {
             "name": "pear2/net_routeros",
-            "version": "dev-master",
+            "version": "1.0.0b5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear2/Net_RouterOS.git",
@@ -72,7 +72,7 @@
                 "router",
                 "routeros"
             ],
-            "time": "2014-11-04 12:52:46"
+            "time": "2014-11-04T12:52:46+00:00"
         },
         {
             "name": "pear2/net_transmitter",
@@ -3285,7 +3285,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "pear2/net_routeros": 20,
         "phpunit/phpunit": 20
     },
     "prefer-stable": false,
