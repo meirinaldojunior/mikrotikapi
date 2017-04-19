@@ -20,6 +20,6 @@
     "orchestra/testbench": "~3.0"
   },
   "require": {
-    "pear2/net_routeros": "1.0.0b5"
+    "pear2/net_routeros": "dev-master"
   }
 }
