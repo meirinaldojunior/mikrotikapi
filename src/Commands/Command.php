@@ -14,6 +14,7 @@ use jjsquady\MikrotikApi\Core\QueryBuilder;
 use jjsquady\MikrotikApi\Core\Request;
 use jjsquady\MikrotikApi\Entity\Entity;
 use jjsquady\MikrotikApi\Entity\GeneticEntity;
+use jjsquady\MikrotikApi\Exceptions\CommandException;
 use jjsquady\MikrotikApi\Exceptions\InvalidCommandException;
 use jjsquady\MikrotikApi\Support\EntityUtils;
 use Exception;
@@ -72,12 +73,18 @@ abstract class Command implements CommandInterface
      */
     protected $query;
 
+
     /**
      * Command constructor.
      * @param Client $client
+     * @throws CommandException
      */
     public function __construct(Client $client)
     {
+        if (empty($this->base_command) || is_null($this->base_command)) {
+            throw new CommandException("Missing \$base_command property. Set the \$base_command property with a valid command.");
+        }
+
         $this->client  = $client;
         $this->request = new Request($this->base_command);
     }
@@ -91,23 +98,18 @@ abstract class Command implements CommandInterface
     {
         $instance          = new static($client);
         $instance->client  = $client;
-        $instance->request = new Request($instance->base_command);
         return $instance;
     }
 
 
     /**
      * @param $command
-     * @param bool $async
-     * @param null $args array
-     * @param null $callback Closure
+     * @param null $args
      * @return $this
-     * @throws Exception
      */
     public function executeCommand($command, $args = null)
     {
-
-        $this->request->setCommand($command);
+        $this->request = new Request($command);
 
         $this->processCommandArgs($args);
 
