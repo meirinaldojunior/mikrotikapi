@@ -37,7 +37,7 @@ abstract class Entity
             $this->directory = (new ReflectionClass($this))->getShortName();
         }
 
-        $check = isset($this->fillable);
+        $check = is_array($this->fillable);
 
         foreach ($params as $param => $value) {
             if ($check) {

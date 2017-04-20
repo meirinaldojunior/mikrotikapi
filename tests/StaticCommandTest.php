@@ -51,6 +51,7 @@ class StaticCommandTest extends TestCase
         $response = Interfaces::bind($this->getConn())
                               ->executeCommand('/interface/print')
                               ->get()->toArray();
+        var_dump($response);
         $this->assertEquals(true, is_array($response));
     }
 

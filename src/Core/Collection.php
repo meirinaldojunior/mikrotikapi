@@ -12,5 +12,9 @@ use Illuminate\Support\Collection as IlluminateCollection;
 
 class Collection extends IlluminateCollection
 {
-
+    public function add($value)
+    {
+        parent::push($value);
+        return $this;
+    }
 }

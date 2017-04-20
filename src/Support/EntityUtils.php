@@ -9,9 +9,22 @@
 namespace jjsquady\MikrotikApi\Support;
 
 use jjsquady\MikrotikApi\Core\Collection;
+use jjsquady\MikrotikApi\Entity\Entity;
+use PEAR2\Net\RouterOS\Response;
+use PEAR2\Net\RouterOS\ResponseCollection;
 
+/**
+ * Class EntityUtils
+ * @package jjsquady\MikrotikApi\Support
+ */
 trait EntityUtils
 {
+
+    /**
+     * @param $items
+     * @param $entityClass Entity
+     * @return Collection
+     */
     private function convertArrayToEntities($items, $entityClass)
     {
         if (!is_array($items)) {
@@ -21,12 +34,18 @@ trait EntityUtils
         $collection = new Collection();
 
         foreach ($items as $item) {
-            $collection->push(new $entityClass($this->getEntityProperties($item)));
+            if ($item->getType() == Response::TYPE_DATA) {
+                $collection->add(new $entityClass($this->getEntityProperties($item)));
+            }
         }
 
         return $collection;
     }
 
+    /**
+     * @param $array
+     * @return array
+     */
     private function getEntityProperties($array)
     {
         $attributes = [];
